@@ -3,7 +3,7 @@ set -euo pipefail
 
 SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}" 2>/dev/null || echo "${BASH_SOURCE[0]}")"
 ROOT_DIR="$(cd "$(dirname "$SCRIPT_PATH")/.." && pwd)"
-PID_FILE="$ROOT_DIR/.iflow/gsd-watch.pid"
+PID_FILE="$ROOT_DIR/.gsd/gsd-watch.pid"
 
 if [[ ! -f "$PID_FILE" ]]; then
   echo "stopped"

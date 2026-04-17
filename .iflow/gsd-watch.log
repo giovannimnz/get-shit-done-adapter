@@ -1,8 +1,0 @@
-Watcher GSD ativo.
-Monitorando mudanças em .claude/commands/gsd e .claude/agents/gsd-*.md
-[2026-04-09T00:03:15.055Z] sync ok (startup)
-Watcher GSD ativo.
-Monitorando mudanças em .claude/commands/gsd e .claude/agents/gsd-*.md
-[2026-04-09T00:08:26.785Z] sync ok (startup)
-[2026-04-09T03:14:36.538Z] sync ok (change:browser.md)
-[2026-04-09T04:03:36.582Z] sync ok (change:browser-headless.md)

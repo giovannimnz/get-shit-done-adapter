@@ -1,102 +1,86 @@
-# Get Shit Done (GSD) - Adapter para iFlow e Qoder
+# Get Shit Done (GSD) - Adapter para Qoder
 
-Este repositório contém o adapter que permite usar o **Get Shit Done (GSD)** tanto no **iFlow CLI** quanto no **Qoder CLI**, com sincronização automática e pasta única compartilhada.
+Este repositorio contem o adapter que permite usar o **Get Shit Done (GSD)** no **Qoder CLI** (qodercli).
 
-## O que é este adapter?
+## O que e este adapter?
 
-O GSD é um sistema de workflows e comandos para automação de desenvolvimento de software. Este adapter permite:
+O GSD e um sistema de workflows e comandos para automacao de desenvolvimento de software. Este adapter permite:
 
-- Usar GSD tanto no iFlow quanto no Qoder
-- Sincronização automática entre as duas CLIs
-- Pasta única `.claude/` como fonte de verdade
-- Bridge automático para iFlow em `.iflow/`
+- Usar GSD com Qoder CLI
+- Pasta `.claude/` como fonte unica dos comandos e agentes GSD
+- Qoder le `.claude` diretamente com `--with-claude-config`
 
 ## Estrutura
 
 ```
 get-shit-done-adapter/
-├── scripts/              # Scripts de automação e bridge
-│   ├── gsd-iflow-bridge.mjs      # Gera bridge para iFlow
-│   ├── gsd-sync-clis.sh          # Sincroniza iFlow com .claude
-│   ├── gsd-watch-*.sh/mjs        # Watcher para sync automático
+├── scripts/              # Scripts de automacao
+│   ├── gsd-adapter.sh            # Instala GSD + abre Qoder em qualquer pasta
 │   ├── qoder-gsd.sh              # Launcher do Qoder com GSD
-│   ├── iflow-gsd.sh              # Launcher do iFlow com GSD
-│   └── iflow-instance*.sh/mjs    # Gerenciamento de instâncias iFlow
-├── .claude/              # Fonte única do GSD
+│   ├── gsd-sync-clis.sh          # Atualiza fonte GSD
+│   ├── gsd-auto-setup.sh         # Setup automatico (links, PATH, hooks)
+│   ├── gsd-watch-*.sh/mjs        # Watcher para sync automatico
+│   ├── gsd-browser-headless.sh   # Browser headless
+│   └── start-gsd-browser.sh      # Quick start do browser
+├── .claude/              # Fonte unica do GSD
 │   └── get-shit-done/    # Comandos, agentes, workflows
-├── .iflow/               # Bridge gerado para iFlow
-│   ├── commands/         # Comandos GSD em formato TOML
-│   └── agents/           # Agentes GSD
-├── GSD-IFLOW-QODER.md    # Documentação completa
+├── .gsd/                 # Dados do watcher (pid, log)
+├── GSD-QODER.md          # Documentacao tecnica
 └── MANUAL.md             # Manual de uso passo a passo
 ```
 
-## Instalação Rápida
+## Instalacao Rapida
 
 ```bash
-# 1. Clone este repositório
+# 1. Clone este repositorio
 git clone https://github.com/giovannimnz/get-shit-done-adapter.git
 cd get-shit-done-adapter
 
-# 2. Execute o setup automático
+# 2. Execute o setup (instala links, PATH no .zshrc, hooks git)
 ./scripts/gsd-auto-setup.sh --start-watch
 
-# 3. Pronto! Use GSD em ambas as CLIs
-qoder -w /seu/projeto
-iflow  # (equivale a iflow1)
+# 3. Abra um novo terminal (ou: source ~/.zshrc)
 ```
 
 ## Uso
 
-### Com Qoder
+### gsd-adapter (recomendado)
+
+Entre na pasta de qualquer projeto e rode:
 
 ```bash
-# Método 1: Direto
-./scripts/qoder-gsd.sh -w /caminho/do/projeto
+cd /caminho/do/projeto
+gsd-adapter
+```
 
-# Método 2: Após setup (recomendado)
+Isso automaticamente:
+1. Instala o GSD na `.claude/` do projeto (`npx get-shit-done-cc@latest --claude --local`)
+2. Sincroniza agentes e comandos do adapter
+3. Abre o Qoder com GSD ativo
+
+Para so instalar sem abrir o Qoder:
+
+```bash
+gsd-adapter --no-qoder
+```
+
+### Metodo alternativo
+
+```bash
 qoder -w /caminho/do/projeto
 ```
 
-### Com iFlow
+## Pre-requisitos
 
-```bash
-# Método 1: Instância única
-./scripts/iflow-gsd.sh
-
-# Método 2: Múltiplas instâncias (após setup)
-iflow1  # Instância 1
-iflow2  # Instância 2
-iflow3  # Instância 3
-```
-
-## Sincronização Automática
-
-O adapter inclui um watcher que mantém iFlow sincronizado com as mudanças em `.claude/`:
-
-```bash
-# Iniciar watcher
-./scripts/gsd-watch-start.sh
-
-# Verificar status
-./scripts/gsd-watch-status.sh
-
-# Parar watcher
-./scripts/gsd-watch-stop.sh
-```
-
-## Pré-requisitos
-
-- **iFlow CLI** instalado
-- **Qoder CLI** instalado (opcional)
-- **Node.js** (para scripts .mjs)
+- **Qoder CLI** instalado
+- **Node.js** (para scripts .mjs e npx)
 - **Bash** (para scripts .sh)
 
-## Documentação
+## Documentacao
 
 - [MANUAL.md](MANUAL.md) - Manual completo de uso
-- [GSD-IFLOW-QODER.md](GSD-IFLOW-QODER.md) - Documentação técnica
+- [GSD-QODER.md](GSD-QODER.md) - Documentacao tecnica
 
-## Licença
+## Licenca
 
-Este adapter é distribuído sob a mesma licença do projeto GSD original.
+Este adapter e distribuido sob a mesma licenca do projeto GSD original.

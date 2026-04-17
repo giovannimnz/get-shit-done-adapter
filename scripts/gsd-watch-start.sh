@@ -3,15 +3,16 @@ set -euo pipefail
 
 SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}" 2>/dev/null || echo "${BASH_SOURCE[0]}")"
 ROOT_DIR="$(cd "$(dirname "$SCRIPT_PATH")/.." && pwd)"
-PID_FILE="$ROOT_DIR/.iflow/gsd-watch.pid"
-LOG_FILE="$ROOT_DIR/.iflow/gsd-watch.log"
+GSD_DIR="$ROOT_DIR/.gsd"
+PID_FILE="$GSD_DIR/gsd-watch.pid"
+LOG_FILE="$GSD_DIR/gsd-watch.log"
 
-mkdir -p "$ROOT_DIR/.iflow"
+mkdir -p "$GSD_DIR"
 
 if [[ -f "$PID_FILE" ]]; then
   PID="$(cat "$PID_FILE" 2>/dev/null || true)"
   if [[ -n "${PID:-}" ]] && kill -0 "$PID" 2>/dev/null; then
-    echo "Watcher já está rodando (pid=$PID)."
+    echo "Watcher ja esta rodando (pid=$PID)."
     exit 0
   fi
 fi

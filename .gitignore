@@ -1,0 +1,5 @@
+# GSD watcher data
+.gsd/
+
+# Node
+node_modules/

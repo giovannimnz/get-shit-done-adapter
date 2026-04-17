@@ -11,7 +11,7 @@ const WATCH_DIRS = [
 
 for (const dir of WATCH_DIRS) {
   if (!fs.existsSync(dir)) {
-    console.error(`Diretório não encontrado: ${dir}`);
+    console.error(`Diretorio nao encontrado: ${dir}`);
     process.exit(1);
   }
 }
@@ -62,8 +62,8 @@ function onFsEvent(dir, eventType, filename) {
   timer = setTimeout(() => runSync(`${eventType}:${filename || 'unknown'}`), 300);
 }
 
-console.log('Watcher GSD ativo.');
-console.log('Monitorando mudanças em .claude/commands/gsd e .claude/agents/gsd-*.md');
+console.log('Watcher GSD ativo (Qoder).');
+console.log('Monitorando mudancas em .claude/commands/gsd e .claude/agents/gsd-*.md');
 
 for (const dir of WATCH_DIRS) {
   fs.watch(dir, { persistent: true }, (eventType, filename) => onFsEvent(dir, eventType, filename));

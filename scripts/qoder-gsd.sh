@@ -26,18 +26,21 @@ if [[ -n "${QODER_BIN:-}" ]]; then
   exec "$QODER_BIN" "${EXTRA_ARGS[@]}" "$@"
 fi
 
+# Search for the real qoder binary (try qodercli and qoder)
 TARGET=""
-while IFS= read -r cand; do
-  [[ -z "$cand" ]] && continue
-  cand_real="$(readlink -f "$cand" 2>/dev/null || echo "$cand")"
-  if [[ "$cand_real" != "$SELF_PATH" ]]; then
-    TARGET="$cand"
-    break
-  fi
-done < <(which -a qoder 2>/dev/null || true)
+for bin_name in qodercli qoder; do
+  while IFS= read -r cand; do
+    [[ -z "$cand" ]] && continue
+    cand_real="$(readlink -f "$cand" 2>/dev/null || echo "$cand")"
+    if [[ "$cand_real" != "$SELF_PATH" ]]; then
+      TARGET="$cand"
+      break 2
+    fi
+  done < <(which -a "$bin_name" 2>/dev/null || true)
+done
 
 if [[ -z "$TARGET" ]]; then
-  echo "Erro: não encontrei binário real do qoder (defina QODER_BIN se necessário)." >&2
+  echo "Erro: nao encontrei binario real do qoder/qodercli (defina QODER_BIN se necessario)." >&2
   exit 1
 fi
 

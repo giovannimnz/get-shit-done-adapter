@@ -1,51 +1,40 @@
-# Manual de Uso - GSD Adapter para iFlow e Qoder
+# Manual de Uso - GSD Adapter para Qoder
 
-## Índice
+## Indice
 
-1. [Pré-requisitos](#pré-requisitos)
-2. [Instalação](#instalação)
-3. [Configuração](#configuração)
-4. [Uso Básico](#uso-básico)
-5. [Uso Avançado](#uso-avançado)
-6. [Sincronização Automática](#sincronização-automática)
-7. [Múltiplas Instâncias iFlow](#múltiplas-instâncias-iflow)
-8. [Troubleshooting](#troubleshooting)
+1. [Pre-requisitos](#pre-requisitos)
+2. [Instalacao](#instalacao)
+3. [Configuracao](#configuracao)
+4. [Uso Basico](#uso-basico)
+5. [Uso Avancado](#uso-avancado)
+6. [Troubleshooting](#troubleshooting)
 
 ---
 
-## Pré-requisitos
+## Pre-requisitos
 
-Antes de começar, verifique se você tem instalado:
+Antes de comecar, verifique se voce tem instalado:
 
-### Obrigatórios
-
-- **iFlow CLI** - [Instalação do iFlow](https://github.com/iflow-ai/iflow)
+- **Qoder CLI** - Para usar GSD com Qoder
 - **Node.js** v14+ - Para executar scripts .mjs
 - **Bash** - Para executar scripts .sh
 - **Git** - Para versionamento
 
-### Opcionais
-
-- **Qoder CLI** - Para usar GSD com Qoder
-
-### Verificação
+### Verificacao
 
 ```bash
-# Verificar iFlow
-iflow --version
+# Verificar Qoder
+qodercli --version
 
 # Verificar Node.js
 node --version
-
-# Verificar Qoder (opcional)
-qoder --version
 ```
 
 ---
 
-## Instalação
+## Instalacao
 
-### Passo 1: Clonar o Repositório
+### Passo 1: Clonar o Repositorio
 
 ```bash
 git clone https://github.com/giovannimnz/get-shit-done-adapter.git
@@ -54,7 +43,7 @@ cd get-shit-done-adapter
 
 ### Passo 2: Instalar o Adapter
 
-Execute o script de setup automático:
+Execute o script de setup automatico:
 
 ```bash
 ./scripts/gsd-auto-setup.sh --start-watch
@@ -62,17 +51,24 @@ Execute o script de setup automático:
 
 Este comando faz:
 
-1. Cria links simbólicos em `~/.local/bin` e `~/bin`
-2. Instala hooks Git para sincronização automática
-3. Inicia o watcher em background
-4. Configura overrides transparentes para `qoder` e `iflow`
+1. Cria links simbolicos em `~/.local/bin` e `~/bin` (incluindo `gsd-adapter`)
+2. Adiciona PATH ao `~/.zshrc` (e `~/.bashrc` se existir)
+3. Instala hooks Git para sincronizacao automatica
+4. Inicia o watcher em background
+5. Configura override transparente para `qoder`
 
-### Passo 3: Verificar Instalação
+### Passo 3: Abrir novo terminal
 
 ```bash
-# Verificar se os links foram criados
-ls -la ~/.local/bin/qoder-gsd
-ls -la ~/.local/bin/iflow-gsd
+# Ou recarregar o shell atual:
+source ~/.zshrc
+```
+
+### Passo 4: Verificar Instalacao
+
+```bash
+# Verificar se gsd-adapter esta disponivel
+which gsd-adapter
 
 # Verificar status do watcher
 gsd-watch-status
@@ -80,11 +76,11 @@ gsd-watch-status
 
 ---
 
-## Configuração
+## Configuracao
 
 ### PATH
 
-Se `~/.local/bin` não estiver no PATH, adicione ao seu shell:
+O setup automatico ja adiciona o PATH ao `.zshrc`. Se precisar adicionar manualmente:
 
 ```bash
 # Para Bash (~/.bashrc)
@@ -96,54 +92,50 @@ echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
 source ~/.zshrc
 ```
 
-### API Keys para iFlow (Múltiplas Instâncias)
-
-Configure API keys para cada instância de iFlow:
-
-```bash
-# Adicione ao seu ~/.bashrc ou ~/.zshrc
-export IFLOW_API_KEY_1="sua-api-key-1"
-export IFLOW_API_KEY_2="sua-api-key-2"
-export IFLOW_API_KEY_3="sua-api-key-3"
-```
-
 ---
 
-## Uso Básico
+## Uso Basico
 
-### Com Qoder
+### gsd-adapter (recomendado)
+
+Entre na pasta de qualquer projeto e rode:
 
 ```bash
-# Método 1: Usando o wrapper diretamente
+cd /caminho/do/projeto
+gsd-adapter
+```
+
+Isso automaticamente:
+1. Instala o GSD na `.claude/` do projeto
+2. Sincroniza agentes e comandos do adapter
+3. Abre o Qoder com GSD ativo
+
+Opcoes:
+
+```bash
+gsd-adapter --no-qoder   # So instala, nao abre Qoder
+gsd-adapter --force       # Reinstala mesmo se ja existe
+gsd-adapter --help        # Mostra ajuda
+```
+
+### Com Qoder diretamente
+
+```bash
+# Metodo 1: Usando o wrapper diretamente
 ./scripts/qoder-gsd.sh -w /caminho/do/projeto
 
-# Método 2: Após setup (recomendado)
+# Metodo 2: Apos setup (recomendado)
 qoder -w /caminho/do/projeto
 
 # O wrapper automaticamente:
-# 1. Sincroniza GSD com iFlow
+# 1. Sincroniza GSD
 # 2. Inicia Qoder com --with-claude-config
 ```
 
-### Com iFlow
+### Sincronizacao Manual
 
 ```bash
-# Método 1: Usando o wrapper diretamente
-./scripts/iflow-gsd.sh
-
-# Método 2: Após setup (recomendado)
-iflow      # Equivale a iflow1
-
-# Instâncias dedicadas
-iflow1     # Instância 1 (padrão)
-iflow2     # Instância 2
-iflow3     # Instância 3
-```
-
-### Sincronização Manual
-
-```bash
-# Sincronizar iFlow com .claude
+# Sincronizar GSD
 ./scripts/gsd-sync-clis.sh
 
 # Atualizar GSD da fonte + sincronizar
@@ -152,11 +144,11 @@ iflow3     # Instância 3
 
 ---
 
-## Uso Avançado
+## Uso Avancado
 
-### Comandos GSD Disponíveis
+### Comandos GSD Disponiveis
 
-Após a instalação, você pode usar comandos GSD em ambas as CLIs:
+Apos a instalacao, voce pode usar comandos GSD no Qoder:
 
 #### Comandos Principais
 
@@ -179,26 +171,26 @@ gsd-verify-phase
 # Code review
 gsd-code-review
 
-# Documentação
+# Documentacao
 gsd-docs-update
 ```
 
 #### Workflows
 
 ```bash
-# Modo autônomo
+# Modo autonomo
 gsd-autonomous
 
 # Explorar codebase
 gsd-explore
 
-# Verificar saúde
+# Verificar saude
 gsd-health
 
 # Progresso
 gsd-progress
 
-# Estatísticas
+# Estatisticas
 gsd-stats
 ```
 
@@ -208,17 +200,15 @@ gsd-stats
 # Executar GSD Browser em modo headless
 ./scripts/gsd-browser-headless.sh
 
-# Ou após setup
+# Ou apos setup
 gsd-browser  # Automaticamente usa --no-open
 ```
 
 ---
 
-## Sincronização Automática
+## Watcher
 
-### Watcher
-
-O watcher monitora mudanças em `.claude/` e sincroniza automaticamente com `.iflow/`:
+O watcher monitora mudancas em `.claude/` e pode disparar sync automatico:
 
 ```bash
 # Iniciar watcher
@@ -239,108 +229,47 @@ gsd-watch-stop
 
 ### Hooks Git
 
-O setup instala hooks Git que disparam sincronização automaticamente:
+O setup instala hooks Git que disparam sincronizacao automaticamente:
 
-- `post-merge` - Após pull
-- `post-checkout` - Após checkout de branch
-- `post-rewrite` - Após rebase/amend
-
----
-
-## Múltiplas Instâncias iFlow
-
-### Por que Múltiplas Instâncias?
-
-- Trabalhar em múltiplos projetos simultaneamente
-- Usar diferentes API keys
-- Isolar configurações por projeto
-
-### Configuração
-
-```bash
-# 1. Configure API keys
-export IFLOW_API_KEY_1="key-projeto-1"
-export IFLOW_API_KEY_2="key-projeto-2"
-export IFLOW_API_KEY_3="key-projeto-3"
-
-# 2. Cada instância usa um diretório isolado
-# ~/.iflow1  -> Instância 1
-# ~/.iflow2  -> Instância 2
-# ~/.iflow3  -> Instância 3
-```
-
-### Uso
-
-```bash
-# Instância 1 (padrão)
-iflow1
-iflow      # Alias para iflow1
-
-# Instância 2
-iflow2
-
-# Instância 3
-iflow3
-```
+- `post-merge` - Apos pull
+- `post-checkout` - Apos checkout de branch
+- `post-rewrite` - Apos rebase/amend
 
 ---
 
 ## Troubleshooting
 
-### Problema: Comando não encontrado
+### Problema: Comando nao encontrado
 
 ```bash
 # Verificar PATH
 echo $PATH | grep -o ".local/bin"
 
-# Se não encontrar, adicionar ao PATH
+# Se nao encontrar, adicionar ao PATH
 export PATH="$HOME/.local/bin:$PATH"
 ```
 
-### Problema: Watcher não inicia
+### Problema: Watcher nao inicia
 
 ```bash
-# Verificar se Node.js está instalado
+# Verificar se Node.js esta instalado
 node --version
 
-# Verificar permissões
+# Verificar permissoes
 chmod +x scripts/gsd-watch-*.sh scripts/gsd-watch-*.mjs
 
 # Verificar processos existentes
 ps aux | grep gsd-watch
 ```
 
-### Problema: Sincronização não funciona
+### Problema: Qoder nao carrega GSD
 
 ```bash
-# Sincronizar manualmente
-./scripts/gsd-sync-clis.sh
+# Verificar se Qoder esta instalado
+qodercli --version
 
-# Verificar arquivos fonte
-ls -la .claude/get-shit-done/
-
-# Verificar bridge gerado
-ls -la .iflow/commands/
-ls -la .iflow/agents/
-```
-
-### Problema: iFlow não reconhece comandos GSD
-
-```bash
-# Regenerar bridge
-./scripts/gsd-iflow-bridge.mjs
-
-# Verificar configuração do iFlow
-cat ~/.iflow/settings.json
-```
-
-### Problema: Qoder não carrega GSD
-
-```bash
-# Verificar se Qoder suporta --with-claude-config
-qoder --help | grep "with-claude-config"
-
-# Se não suportar, usar versão mais recente do Qoder
+# Verificar se suporta --with-claude-config
+qodercli --help | grep "with-claude-config"
 ```
 
 ---
@@ -350,19 +279,12 @@ qoder --help | grep "with-claude-config"
 ### Verificar Logs do Watcher
 
 ```bash
-cat .iflow/gsd-watch.log
-```
-
-### Debug do Bridge
-
-```bash
-# Executar bridge com output verbose
-node scripts/gsd-iflow-bridge.mjs
+cat .gsd/gsd-watch.log
 ```
 
 ---
 
-## Reinstalação
+## Reinstalacao
 
 Se precisar reinstalar:
 
@@ -371,9 +293,10 @@ Se precisar reinstalar:
 ./scripts/gsd-watch-stop.sh
 
 # Remover links
-rm -f ~/.local/bin/qoder-gsd ~/.local/bin/iflow-gsd
-rm -f ~/.local/bin/iflow1 ~/.local/bin/iflow2 ~/.local/bin/iflow3
+rm -f ~/.local/bin/qoder-gsd
 rm -f ~/.local/bin/gsd-*
+rm -f ~/bin/qoder-gsd ~/bin/qoder
+rm -f ~/bin/gsd-*
 
 # Remover hooks
 rm -f .git/hooks/post-merge .git/hooks/post-checkout .git/hooks/post-rewrite
@@ -386,15 +309,15 @@ rm -f .git/hooks/post-merge .git/hooks/post-checkout .git/hooks/post-rewrite
 
 ## Suporte
 
-Para problemas ou dúvidas:
+Para problemas ou duvidas:
 
 1. Verifique este manual
-2. Consulte [GSD-IFLOW-QODER.md](GSD-IFLOW-QODER.md)
-3. Abra uma issue no repositório
+2. Consulte [GSD-QODER.md](GSD-QODER.md)
+3. Abra uma issue no repositorio
 
 ---
 
-## Atualização
+## Atualizacao
 
 Para atualizar o adapter:
 
