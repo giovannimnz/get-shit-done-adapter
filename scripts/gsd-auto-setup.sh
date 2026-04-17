@@ -125,10 +125,11 @@ if $INSTALL_LINKS; then
   safe_link "$ROOT_DIR/scripts/gsd-watch-status.sh" "$HOME/bin/gsd-watch-status"
   safe_link "$ROOT_DIR/scripts/gsd-browser-headless.sh" "$HOME/bin/gsd-browser"
 
-  # Seamless override: plain qoder runs through sync wrapper.
+  # Seamless override: plain qoder/qodercli runs through sync wrapper.
   if $OVERRIDE_BASE_CMDS; then
     safe_link "$ROOT_DIR/scripts/qoder-gsd.sh" "$HOME/bin/qoder"
-    echo "[ok] override automatico de qoder ativado via ~/bin"
+    safe_link "$ROOT_DIR/scripts/qoder-gsd.sh" "$HOME/bin/qodercli"
+    echo "[ok] override automatico de qoder e qodercli ativado via ~/bin"
   fi
 
   echo "[ok] links em ~/.local/bin e ~/bin criados/atualizados"
