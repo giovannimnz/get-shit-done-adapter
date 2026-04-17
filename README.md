@@ -1,6 +1,6 @@
 # Get Shit Done (GSD) - Adapter para Qoder
 
-Este repositorio contem o adapter que permite usar o **Get Shit Done (GSD)** no **Qoder CLI** (qodercli).
+Este repositorio contem o adapter que permite usar o **Get Shit Done (GSD)** no **Qoder CLI** (`qodercli` ou `qoder`).
 
 ## O que e este adapter?
 
@@ -67,12 +67,14 @@ gsd-adapter --no-qoder
 ### Metodo alternativo
 
 ```bash
+# Funciona com qoder ou qodercli
+qodercli -w /caminho/do/projeto
 qoder -w /caminho/do/projeto
 ```
 
 ## Pre-requisitos
 
-- **Qoder CLI** instalado
+- **Qoder CLI** instalado (`qodercli` ou `qoder`)
 - **Node.js** (para scripts .mjs e npx)
 - **Bash** (para scripts .sh)
 

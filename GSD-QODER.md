@@ -18,6 +18,7 @@ Este projeto usa `.claude/` como **fonte unica** do GSD.
 
 - `scripts/qoder-gsd.sh`
   - Faz sync silencioso e inicia Qoder com `--with-claude-config`
+  - Detecta automaticamente o binario (`qodercli` ou `qoder`)
 
 - `scripts/gsd-sync-clis.sh`
   - Atualiza GSD da fonte `.claude`
@@ -85,7 +86,7 @@ Isso faz:
 - instala hooks git (`post-merge`, `post-checkout`, `post-rewrite`) para re-sync automatico
 - inicia watcher em background
 - override transparente:
-  - `qoder` -> wrapper com sync + `--with-claude-config`
+  - `qoder` e `qodercli` -> wrapper com sync + `--with-claude-config`
   - `gsd-browser` -> wrapper headless (`--no-open` por padrao)
 
 ### 2) Uso diario
@@ -96,9 +97,10 @@ Apos o setup, voce pode usar **sem mudar habito**:
 cd /pasta/do/projeto && gsd-adapter
 ```
 
-Ou diretamente:
+Ou diretamente (ambos funcionam):
 
 ```bash
+qodercli -w /home/ubuntu/docker/AtiusCapital
 qoder -w /home/ubuntu/docker/AtiusCapital
 ```
 

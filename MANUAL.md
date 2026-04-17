@@ -15,7 +15,7 @@
 
 Antes de comecar, verifique se voce tem instalado:
 
-- **Qoder CLI** - Para usar GSD com Qoder
+- **Qoder CLI** - `qodercli` ou `qoder` (ambos funcionam)
 - **Node.js** v14+ - Para executar scripts .mjs
 - **Bash** - Para executar scripts .sh
 - **Git** - Para versionamento
@@ -23,8 +23,9 @@ Antes de comecar, verifique se voce tem instalado:
 ### Verificacao
 
 ```bash
-# Verificar Qoder
+# Verificar Qoder (qualquer um dos dois)
 qodercli --version
+qoder --version
 
 # Verificar Node.js
 node --version
@@ -55,7 +56,7 @@ Este comando faz:
 2. Adiciona PATH ao `~/.zshrc` (e `~/.bashrc` se existir)
 3. Instala hooks Git para sincronizacao automatica
 4. Inicia o watcher em background
-5. Configura override transparente para `qoder`
+5. Configura override transparente para `qoder` e `qodercli`
 
 ### Passo 3: Abrir novo terminal
 
@@ -120,11 +121,11 @@ gsd-adapter --help        # Mostra ajuda
 
 ### Com Qoder diretamente
 
-```bash
-# Metodo 1: Usando o wrapper diretamente
-./scripts/qoder-gsd.sh -w /caminho/do/projeto
+Apos o setup, tanto `qoder` quanto `qodercli` carregam GSD automaticamente:
 
-# Metodo 2: Apos setup (recomendado)
+```bash
+# Ambos funcionam (o adapter intercepta os dois)
+qodercli -w /caminho/do/projeto
 qoder -w /caminho/do/projeto
 
 # O wrapper automaticamente:
@@ -268,8 +269,10 @@ ps aux | grep gsd-watch
 # Verificar se Qoder esta instalado
 qodercli --version
 
-# Verificar se suporta --with-claude-config
-qodercli --help | grep "with-claude-config"
+# Verificar se o override esta ativo (deve apontar para qoder-gsd.sh)
+which qodercli
+which qoder
+ls -la ~/bin/qodercli ~/bin/qoder
 ```
 
 ---
@@ -293,9 +296,9 @@ Se precisar reinstalar:
 ./scripts/gsd-watch-stop.sh
 
 # Remover links
-rm -f ~/.local/bin/qoder-gsd
+rm -f ~/.local/bin/qoder-gsd ~/.local/bin/qoder ~/.local/bin/qodercli
 rm -f ~/.local/bin/gsd-*
-rm -f ~/bin/qoder-gsd ~/bin/qoder
+rm -f ~/bin/qoder-gsd ~/bin/qoder ~/bin/qodercli
 rm -f ~/bin/gsd-*
 
 # Remover hooks
