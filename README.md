@@ -31,6 +31,8 @@ get-shit-done-adapter/
 
 ## Instalacao Rapida
 
+### Linux / macOS
+
 ```bash
 # 1. Clone este repositorio
 git clone https://github.com/giovannimnz/get-shit-done-adapter.git
@@ -41,6 +43,21 @@ cd get-shit-done-adapter
 
 # 3. Abra um novo terminal (ou: source ~/.zshrc)
 ```
+
+### Windows (PowerShell)
+
+```powershell
+# 1. Clone este repositorio
+git clone https://github.com/giovannimnz/get-shit-done-adapter.git
+cd get-shit-done-adapter
+
+# 2. Execute o setup (instala links, PATH, hooks git)
+.\scripts\gsd-auto-setup.ps1 -StartWatch
+
+# 3. Abra um novo terminal
+```
+
+> **Nota:** Requer PowerShell executado como Administrador ou Windows Developer Mode habilitado para criacao de symlinks. Caso contrario, o script adiciona automaticamente a pasta `scripts/` ao PATH do usuario.
 
 ## Uso
 
